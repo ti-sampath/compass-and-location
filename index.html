@@ -36,6 +36,7 @@
             <div class="direction n">N</div>
             <div class="direction s">S</div>
         </div>
+
         <div class="value"></div>
     </div>
     <h3 class="lat-log">lt</h3>
@@ -123,7 +124,7 @@
 
                     // compassdir = (compassdir + 90) % 360;
                     compass.style.transform = `rotate(${compassdir}deg)`;
-                    value.innerHTML = compassdir?.toFixed(2);
+                    value.innerHTML = compassdir?.toFixed(2)+'°' ;
                 });
             }
         })()
