@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body{
+            border: 1px solid black;
+            height: 100vh;
+            width: 100vw;
+
+        }
+    </style>
+</head>
+
+<body>
+
+    <h3 id="deg">d</h3>
+
+    <script>
+        let heading;
+
+        
+
+        const compassHeading = (alpha, beta, gamma) => {
+            
+            // Convert degrees to radians
+            const alphaRad = alpha * (Math.PI / 180);
+            const betaRad = beta * (Math.PI / 180);
+            const gammaRad = gamma * (Math.PI / 180);
+
+            // Calculate equation components
+            const cA = Math.cos(alphaRad);
+            const sA = Math.sin(alphaRad);
+            const cB = Math.cos(betaRad);
+            const sB = Math.sin(betaRad);
+            const cG = Math.cos(gammaRad);
+            const sG = Math.sin(gammaRad);
+
+            // Calculate A, B, C rotation components
+            const rA = - cA * sG - sA * sB * cG;
+            const rB = - sA * sG + cA * sB * cG;
+            const rC = - cB * cG;
+            
+            // Calculate compass heading
+            let compassHeading = Math.atan(rA / rB);
+            
+            // Convert from half unit circle to whole unit circle
+            if (rB < 0) {
+                compassHeading += Math.PI;
+            } else if (rA < 0) {
+                compassHeading += 2 * Math.PI;
+            }
+            
+            // Convert radians to degrees
+            compassHeading *= 180 / Math.PI;
+            
+            return compassHeading;
+        };
+
+        const handleOrientation = (event) => {
+            let deg = document.querySelector('#deg');
+            deg.innerHTML = 'heading';
+
+            if (event.webkitCompassHeading) {
+                // some devices don't understand "alpha" (especially IOS devices)
+                heading = event.webkitCompassHeading;
+            }
+            else {
+                heading = compassHeading(event.alpha, event.beta, event.gamma);
+            }
+            
+            deg.innerHTML = heading;
+        };
+
+
+        window.addEventListener('deviceorientation', handleOrientation, false);
+    </script>
+
+</body>
+
+</html>

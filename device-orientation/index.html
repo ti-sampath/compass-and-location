@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Courier New', Courier, monospace;
+        }
+
+        body {
+            border: 1px solid black;
+            height: 100vh;
+            width: 100vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    </style>
+</head>
+
+<body>
+    <!-- <h3 id="deg">testing</h3> -->
+    <div class="dot-holder">
+        <div class="compass">
+            <div class="direction e">E</div>
+            <div class="direction w">W</div>
+            <div class="direction n">N</div>
+            <div class="direction s">S</div>
+        </div>
+        <div class="value"></div>
+        <h3 class="lat-log">lt</h3>
+    </div>
+
+
+    <style>
+        .dot-holder {
+            height: 0;
+            width: 0;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .compass {
+            flex: 0 0 auto;
+            height: 150px;
+            width: 150px;
+            border: 1px solid black;
+            border-radius: 100px;
+            position: relative;
+        }
+
+        .compass .direction {
+            position: absolute;
+            height: fit-content;
+            width: fit-content;
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .compass .direction.e {
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+        }
+
+        .compass .direction.w {
+            left: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+        }
+
+        .compass .direction.n {
+            left: 0;
+            right: 0;
+            top: 0;
+            margin: auto;
+        }
+
+        .compass .direction.s {
+            left: 0;
+            right: 0;
+            bottom: 0;
+            margin: auto;
+        }
+
+        .value {
+            position: absolute;
+        }
+
+        .lat-log{
+            margin-top: 100px;
+        }
+    </style>
+
+    <script>
+        const compass = document.querySelector(".compass");
+        const value = document.querySelector(".value");
+
+        if (window.DeviceOrientationEvent) {
+            // Listen for the deviceorientation event and handle the raw data
+            window.addEventListener("deviceorientation", function (eventData) {
+                var compassdir;
+
+                if (event.webkitCompassHeading) {
+                    // Apple works only with this, alpha doesn't work
+                    compassdir = event.webkitCompassHeading;
+                } else {
+                    compassdir = event.alpha
+                };
+
+
+                // compassdir = (compassdir + 90) % 360;
+                compass.style.transform = `rotate(${compassdir}deg)`;
+                value.innerHTML = compassdir?.toFixed(2);
+            });
+        }
+    </script>
+
+    <script>
+        (() => {
+            var id, c;
+            c = 0;
+            var options = {
+                enableHighAccuracy: true,
+                timeout: 0,
+                maximumAge: 0
+            };
+
+            const latLog = document.querySelector('.lat-log'); 
+
+            function success(pos) {
+                var { latitude, longitude, accuracy } = pos.coords;
+                let str = `Latitude : ${latitude} <br/> Longitude: ${longitude} <br/> Accuracy: ${accuracy} <br/> Count: ${c++}`;
+                latLog.innerHTML = str;
+            }
+
+            function error(err) {
+                console.warn(`ERROR(${err.code}): ${err.message}`);
+            }
+
+            id = navigator.geolocation.watchPosition(success, error);
+            console.log(id);
+
+        })()
+    </script>
+
+</body>
+
+</html>

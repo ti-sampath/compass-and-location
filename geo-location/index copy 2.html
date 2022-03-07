@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="output">
+
+    </div>
+
+    <style>
+        .output {
+            border: 1px solid black;
+        }
+    </style>
+
+    <script>
+        var id, target, options;
+        var output = document.querySelector('.output');
+
+        function success(pos) {
+            var crd = pos.coords;
+
+            let { latitude, longitude, heading } = pos.coords;
+            let str = `latitude: ${latitude} <br/> longitude: ${longitude} <br/> heading: ${heading}`;
+            console.log(str);
+            output.innerHTML = JSON.stringify(str);
+        }
+
+        function error(err) {
+            console.warn('ERROR(' + err.code + '): ' + err.message);
+        }
+
+
+        options = {
+            enableHighAccuracy: true,
+            timeout: 5000,
+            maximumAge: 0
+        };
+
+
+        let render = () => {
+            navigator.geolocation.clearWatch(id);
+            id = navigator.geolocation.watchPosition(success, error, options);
+            window.requestAnimationFrame(render);
+        }
+
+        window.requestAnimationFrame(render);
+
+    </script>
+
+</body>
+
+</html>

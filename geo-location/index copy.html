@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            width: 100vw;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <div class="output">
+
+    </div>
+
+    <style>
+        .output {
+            border: 1px solid black;
+        }
+    </style>
+
+
+
+    <script>
+        var id, target, options;
+        var output = document.querySelector('.output');
+
+
+        function success(pos) {
+            var crd = pos.coords;
+            output.innerHTML = crd;
+            
+
+            // if (target.latitude === crd.latitude && target.longitude === crd.longitude) {
+            //     console.log('Congratulations, you reached the target');
+            //     navigator.geolocation.clearWatch(id);
+            // }
+        }
+
+        function error(err) {
+            console.warn('ERROR(' + err.code + '): ' + err.message);
+        }
+
+        target = {
+            latitude: 0,
+            longitude: 0
+        };
+
+        options = {
+            enableHighAccuracy: false,
+            timeout: 5000,
+            maximumAge: 0
+        };
+
+        id = navigator.geolocation.watchPosition(success, error, options);
+    </script>
+
+
+
+</body>
+
+</html>

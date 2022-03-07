@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        border: 1px solid black;
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+    </style>
+  </head>
+
+  <body>
+    <!-- <h3 id="deg">testing</h3> -->
+    <div class="compass">
+        <div class="direction e" >E</div>
+        <div class="direction w" >W</div>
+        <div class="direction n" >N</div>
+        <div class="direction s" >S</div>
+    </div>
+
+
+    <style>
+        .compass{
+            height: 100px;
+            width: 100px;
+            border: 1px solid black;
+            border-radius: 100px;
+            position: relative;
+        }
+        
+        .compass .direction{
+            position: absolute;
+        }
+
+        .compass .direction .e{
+            right: 0;
+            top: 0;
+            bottom: 0;
+            margin: auto;
+        }
+
+
+
+    </style>
+
+    <script>
+      const compass = document.querySelector(".compass");
+
+      if (window.DeviceOrientationEvent) {
+        // Listen for the deviceorientation event and handle the raw data
+        window.addEventListener("deviceorientation", function (eventData) {
+          var compassdir;
+
+          if (event.webkitCompassHeading) {
+            // Apple works only with this, alpha doesn't work
+            compassdir = event.webkitCompassHeading;
+          } else {
+            compassdir = event.alpha
+          };
+          
+          console.log(compassdir);
+        //   deg.innerHTML = compassdir;
+        compass.style.transform = `rotate(${compassdir}deg)`;
+          
+        });
+      }
+    </script>
+  </body>
+</html>
